@@ -1,23 +1,9 @@
 // membuat ajax
-
-// function getData(link){
-//     // menggunakan ajax dan promise
-//     return new Promise((resolve,reject)=>{
-//         const xhr = new XMLHttpRequest()
-//         xhr.onload = function(){
-//             if(xhr.status == 200){
-//                 resolve(JSON.parse(xhr.response))
-//             }else{
-//                 reject(xhr.responseText)
-//             }
-//         }
-//         xhr.open("GET",link)
-//         xhr.send()
-//     })
-// }
 let link = document.querySelector("input")
- link.addEventListener("input",function(event){
-    const ambil =  new Promise((resolve,reject)=>{
+
+function getData(link){
+    // menggunakan ajax dan promise
+    return new Promise((resolve,reject)=>{
         const xhr = new XMLHttpRequest()
         xhr.onload = function(){
             if(xhr.status == 200){
@@ -26,18 +12,41 @@ let link = document.querySelector("input")
                 reject(xhr.responseText)
             }
         }
-       
-        xhr.open("GET",`http://www.omdbapi.com/?apikey=bb6e65b5&s=${event.target.value}`)
+        xhr.open("GET",link)
         xhr.send()
     })
-    ambil
+}
+link.addEventListener("input",function(event){
+getData(`http://www.omdbapi.com/?apikey=bb6e65b5&s=${event.target.value}`)
     .then(({Search})=>{
         const teks = tampilData(Search)
         console.log(teks)
         const konten = document.getElementById("konten")
         konten.innerHTML = teks
     })
- })
+})
+//  link.addEventListener("input",function(event){
+//     const ambil =  new Promise((resolve,reject)=>{
+//         const xhr = new XMLHttpRequest()
+//         xhr.onload = function(){
+//             if(xhr.status == 200){
+//                 resolve(JSON.parse(xhr.response))
+//             }else{
+//                 reject(xhr.responseText)
+//             }
+//         }
+       
+//         xhr.open("GET",`http://www.omdbapi.com/?apikey=bb6e65b5&s=${event.target.value}`)
+//         xhr.send()
+//     })
+    // ambil
+    // .then(({Search})=>{
+    //     const teks = tampilData(Search)
+    //     console.log(teks)
+    //     const konten = document.getElementById("konten")
+    //     konten.innerHTML = teks
+    // })
+//  })
 function tampilData(object){
     return object.map(el=>{
             return `
