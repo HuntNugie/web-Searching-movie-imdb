@@ -9,21 +9,32 @@ function getData(link){
             if(xhr.status == 200){
                 resolve(JSON.parse(xhr.response))
             }else{
-                reject(xhr.responseText)
+                reject("gagal ambil data")
             }
         }
         xhr.open("GET",link)
         xhr.send()
     })
 }
+let timer;
+const konten = document.getElementById("konten")
+
 link.addEventListener("input",function(event){
-getData(`http://www.omdbapi.com/?apikey=bb6e65b5&s=${event.target.value}`)
-    .then(({Search})=>{
-        const teks = tampilData(Search)
-        console.log(teks)
-        const konten = document.getElementById("konten")
-        konten.innerHTML = teks
-    })
+    clearTimeout(timer)
+    timer = setTimeout(()=>{
+        getData(`http://www.omdbapi.com/?apikey=bb6e65b5&s=${event.target.value}`)
+        .then((response)=>{
+            const {Search} = response
+            if(response.Response.toLowerCase() == "true"){
+                const teks = tampilData(Search)
+                konten.innerHTML = teks
+            }else{
+                konten.innerHTML = `<h1 class="font-bold text-xl">${response.Error}</h1>`
+            }
+        }).finally(()=>{
+            console.log("Sudah beres")
+        })
+    },500)
 })
 //  link.addEventListener("input",function(event){
 //     const ambil =  new Promise((resolve,reject)=>{
